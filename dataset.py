@@ -3,9 +3,14 @@ import csv
 import os
 
 
-# r = requests.get('http://www.chp.gov.hk/files/misc/building_list_eng.csv')
-# content = r.json()
-# print(r.content)
+def download_dataset(url,fileName):
+    r = requests.get(url)
+    # content = r.json()
+    f = open(fileName,"w")
+    f.write(r.text.replace("\r\n","\n"))
+    f.close()
+
+
 class covid_dataset():
     headers = 'case_number, report_date, date_of_onset, gender, age, patient_status, residence, confirm_status, date, confirmed_case_per_day, death_cases, discharge_cases, probable_cases, critical_condition_cases'
     case_number = list()
@@ -30,9 +35,14 @@ class covid_dataset():
     probable_cases = list()
     critical_condition_cases = list()
 
-    os.system('wget -O building_list_eng.csv http://www.chp.gov.hk/files/misc/building_list_eng.csv')
-    os.system('wget -O enhanced_sur_covid_19_eng.csv http://www.chp.gov.hk/files/misc/enhanced_sur_covid_19_eng.csv')
-    os.system('wget -O latest_situation_of_reported_cases_covid_19_eng.csv http://www.chp.gov.hk/files/misc/latest_situation_of_reported_cases_covid_19_eng.csv')
+
+    download_dataset("http://www.chp.gov.hk/files/misc/building_list_eng.csv","building_list_eng.csv")
+    download_dataset("http://www.chp.gov.hk/files/misc/enhanced_sur_covid_19_eng.csv","enhanced_sur_covid_19_eng.csv")
+    download_dataset("http://www.chp.gov.hk/files/misc/latest_situation_of_reported_cases_covid_19_eng.csv","latest_situation_of_reported_cases_covid_19_eng.csv")
+
+    # os.system('wget -O building_list_eng.csv http://www.chp.gov.hk/files/misc/building_list_eng.csv')
+    # os.system('wget -O enhanced_sur_covid_19_eng.csv http://www.chp.gov.hk/files/misc/enhanced_sur_covid_19_eng.csv')
+    # os.system('wget -O latest_situation_of_reported_cases_covid_19_eng.csv http://www.chp.gov.hk/files/misc/latest_situation_of_reported_cases_covid_19_eng.csv')
 
     with open('latest_situation_of_reported_cases_covid_19_eng.csv', newline='') as csvfile:
         rows = csv.reader(csvfile)
